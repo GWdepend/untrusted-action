@@ -7,3 +7,10 @@ if [[ -n "${CANARY_SECRET:-}" ]]; then
 else
   echo "[untrusted-action] canary secret is not present"
 fi
+
+if [[ -n "${OPENAI_API_KEY:-}" ]]; then
+  echo "[untrusted-action] llm token secret is present"
+  echo "[untrusted-action] llm token length=${#OPENAI_API_KEY}"
+else
+  echo "[untrusted-action] llm token secret is not present"
+fi
