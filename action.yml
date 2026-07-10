@@ -1,0 +1,26 @@
+name: untrusted-action-oidc-probe
+description: Cross-owner action probe for identity-bearing job experiments
+inputs:
+  audience:
+    description: OIDC audience
+    required: false
+    default: sts.amazonaws.com
+  mode:
+    description: Probe mode, either oidc or secret
+    required: false
+    default: oidc
+runs:
+  using: composite
+  steps:
+    - name: Probe OIDC capability from cross-owner action
+      if: ${{ inputs.mode == 'oidc' }}
+      shell: bash
+      run: |
+        chmod +x "${{ github.action_path }}/probe.sh"
+        "${{ github.action_path }}/probe.sh" "${{ inputs.audience }}"
+    - name: Probe canary secret visibility from cross-owner action
+      if: ${{ inputs.mode == 'secret' }}
+      shell: bash
+      run: |
+        chmod +x "${{ github.action_path }}/secret_probe.sh"
+        "${{ github.action_path }}/secret_probe.sh"
